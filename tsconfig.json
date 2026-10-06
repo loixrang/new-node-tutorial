@@ -40,4 +40,12 @@
     "moduleDetection": "force",
     "skipLibCheck": true
   },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    ".git",
+    ".vite",
+    "coverage"
+  ]
 }

@@ -8,7 +8,7 @@ const startServer = async () => {
   try {
     await connectDB()
 
-    app.on("error", (error) => {
+    app.on("mount", (error) => {
       console.log("ERROR", error);
       throw error
     })
