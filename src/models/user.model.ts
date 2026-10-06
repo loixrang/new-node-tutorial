@@ -1,14 +1,45 @@
-import e from "express";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true },
-  email: { type: String, required: true, unique: true, lowercase: true },
-  password: { type: String, required: true },
-  loggedIn: { type: Boolean, default: false }
-},
-{
-  timestamps: true
+type UserFields = {
+  username: string;
+  email: string;
+  password: string;
+  loggedIn: boolean;
+};
+
+interface UserMethods {
+  comparePassword(password: string): Promise<boolean>;
+}
+
+type UserModel = mongoose.Model<UserFields, {}, UserMethods>;
+
+const userSchema = new mongoose.Schema<UserFields, UserModel, UserMethods>(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      maxLength: 30,
+      minLength: 1,
+    },
+    email: { type: String, required: true, unique: true, lowercase: true },
+    password: { type: String, required: true, maxLength: 50, minLength: 8 },
+    loggedIn: { type: Boolean, default: false },
+  },
+  { timestamps: true },
+);
+
+//before saving any password, we need to hash it
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
-export const User = mongoose.model("User", userSchema);
+//compare passwords
+userSchema.methods.comparePassword = async function (password: string) {
+  return bcrypt.compare(password, this.password);
+};
+
+export const User = mongoose.model<UserFields, UserModel>("User", userSchema);

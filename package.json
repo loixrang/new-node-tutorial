@@ -18,12 +18,14 @@
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^18.0.5",
     "express": "^5.2.1",
     "mongoose": "^9.11.0",
     "nodemon": "^3.1.14"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.4",
     "tsx": "^4.23.15"

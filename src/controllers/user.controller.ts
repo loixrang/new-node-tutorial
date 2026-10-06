@@ -1,5 +1,5 @@
 import { User } from "../models/user.model.js";
-import type {Request, Response} from "express";
+import type { Request, Response } from "express";
 
 const registerUser = async (req: Request, res: Response) => {
   try {
@@ -36,4 +36,27 @@ const registerUser = async (req: Request, res: Response) => {
     });
   }
 };
-export default {registerUser}
+
+const loginUser = async (req: Request, res: Response) => {
+  try {
+    //checking if the user already exists
+    const { email, password } = req.body;
+
+    const user = await User.findOne({
+      email: email.toLowerCase(),
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Couldn't find user" });
+    }
+
+    //compare the passwords
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch)
+      return res.status(400).json({ message: "invalid credentials" });
+    res.status(200).json({ message: "Successfully logged in", user: {
+      id: user._id
+    } });
+  } catch (error) {}
+};
+export default { registerUser };
