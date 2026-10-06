@@ -1,7 +1,7 @@
 import { User } from "../models/user.model.js";
-import { type RequestHandler } from "express";
+import type {Request, Response} from "express";
 
-const registerUser: RequestHandler = async (req, res) => {
+const registerUser = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
 
