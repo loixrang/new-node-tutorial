@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema<UserFields, UserModel, UserMethods>(
     },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true, maxLength: 50, minLength: 8 },
-    loggedIn: { type: Boolean, default: false },
+    loggedIn: { type: Boolean},
   },
   { timestamps: true },
 );

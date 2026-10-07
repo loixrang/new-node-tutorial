@@ -55,8 +55,14 @@ const loginUser = async (req: Request, res: Response) => {
     if (!isMatch)
       return res.status(400).json({ message: "invalid credentials" });
     res.status(200).json({ message: "Successfully logged in", user: {
-      id: user._id
+      id: user._id,
+      email: user.email,
+      username: user.username,
+      loggedIn: true
     } });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({message: "Internal server error"})
+    console.log(`Error: ${error}`)
+  }
 };
-export default { registerUser };
+export { registerUser, loginUser };
