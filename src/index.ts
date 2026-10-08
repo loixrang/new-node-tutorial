@@ -10,13 +10,12 @@ const startServer = async () => {
   try {
     await connectDB()
 
-    app.on("mount", (error) => {
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on port: ${PORT}`)
+    })
+    server.on("error", (error) => {
       console.log("ERROR", error);
       throw error
-    })
-
-    app.listen(PORT, () => {
-      console.log(`Server is running on port: ${PORT}`)
     })
   } catch (error) {
     console.log("MongoDB connection failed", error);
