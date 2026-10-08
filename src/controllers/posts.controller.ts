@@ -44,4 +44,15 @@ const updatePost = async (req: Request, res: Response) => {
   }
 }
 
-export {createPost, getPosts, updatePost};
+const deletePost = async (req: Request, res: Response) => {
+  try {
+    const deleted = await Post.findByIdAndDelete(req.params.id)
+    if (!deleted)
+      return res.status(404).json({message: "Post not found"})
+    res.status(200).json({message: "Post successfully deleted"})
+  } catch (error) {
+    res.status(500).json({message: "Internal server error", error})
+  }
+}
+
+export {createPost, getPosts, updatePost, deletePost};
