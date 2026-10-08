@@ -9,8 +9,20 @@ const createPost = async (req: Request, res: Response) => {
       return res.status(400).json({message: "All fields are required"})
     }
     const post =  await Post.create({name, description, age})
-    
+    res.status(201).json({message: "Post created succesfully", post})
   } catch (error) {
-    
+    res.status(500).json({message: "Internal server error", error})
   }
 }
+
+//get all posts
+const getPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await Post.find();
+    res.status(200).json({posts})
+  } catch (error) {
+    res.status(500).json({message: "Internal server error", error})
+  }
+}
+
+export {createPost, getPosts};
